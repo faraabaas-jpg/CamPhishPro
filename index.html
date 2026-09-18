@@ -17,21 +17,27 @@
         /* مشغل الفيديو */
         .video-wrapper { width: 100%; aspect-ratio: 16/9; background: black; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
         
-        /* تفاصيل الفيديو والقناة */
+        /* تفاصيل الفيديو */
         .video-info { padding: 12px; background: white; }
         .video-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; line-height: 1.4; }
-        .video-stats { font-size: 12px; color: #606060; margin-bottom: 12px; }
+        .video-stats { font-size: 12px; color: #606060; margin-bottom: 10px; }
         
-        .channel-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; padding-bottom: 12px; border-bottom: 1px solid #e5e5e5; }
+        /* صف القناة وزر الاشتراك مع الأزرار بجانبها تماماً مثل الصورة الأصلية */
+        .channel-and-actions { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding-bottom: 12px; border-bottom: 1px solid #e5e5e5; flex-wrap: wrap; gap: 10px; }
         .channel-info { display: flex; align-items: center; gap: 10px; }
         .channel-avatar { width: 36px; height: 36px; background: #cc0000; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
         .channel-name { font-weight: bold; font-size: 14px; }
         .channel-subs { font-size: 11px; color: #606060; }
         .subscribe-btn { background: #0f0f0f; color: white; border: none; padding: 8px 16px; border-radius: 18px; font-weight: bold; font-size: 13px; cursor: pointer; }
 
-        /* أزرار التفاعل (لايك، شير، إلخ) */
-        .actions-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 12px; }
-        .action-btn { background: #f2f2f2; padding: 6px 12px; border-radius: 18px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 5px; white-space: nowrap; cursor: pointer; }
+        /* الأزرار مطابقة للصورة الأصلية تماماً بالترتيب والشكل */
+        .actions-group { display: flex; align-items: center; background: #f2f2f2; border-radius: 20px; overflow: hidden; }
+        .action-btn { background: transparent; border: none; padding: 6px 12px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px; color: #0f0f0f; }
+        .action-btn:hover { background: #e0e0e0; }
+        .action-divider { width: 1px; height: 18px; background: #d0d0d0; }
+
+        /* زر إضافي منفصل مثل النقاط الثلاث أو المشاركة لو أردت */
+        .icon-only-btn { background: #f2f2f2; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
 
         /* وصف الفيديو والتعليقات */
         .description-box { background: #f2f2f2; padding: 10px; border-radius: 10px; font-size: 12px; color: #333; line-height: 1.5; margin-bottom: 15px; }
@@ -41,7 +47,7 @@
 </head>
 <body>
 
-    <!-- ضع معرّف الفيديو هنا -->
+    <!-- ضع معرّف فيديو يوتيوب هنا -->
     <script>
         const VIDEO_ID = "0OxRVbr1J7w"; 
     </script>
@@ -73,40 +79,52 @@
 
     <!-- معلومات الفيديو -->
     <div class="video-info">
-        <!-- تعديل العنوان هنا -->
-        <div class="video-title">أكتب عنوان الفيديو الجديد هنا ليطابق يوتيوب تماماً</div>
-        <div class="video-stats">614 ألف مشاهدة • قبل سنة واحدة</div>
+        <!-- عنوان الفيديو -->
+        <div class="video-title">في 15 دقيقة هعمل موقعك الخاص ويبقى أونلاين مجاناً...</div>
+        <div class="video-stats">253 ألف مشاهدة • قبل 8 أشهر</div>
 
-        <!-- تفاصيل القناة وزر الاشتراك -->
-        <div class="channel-row">
+        <!-- تفاصيل القناة، زر الاشتراك، والأزرار مطابقة تماماً للصورة الأصلية -->
+        <div class="channel-and-actions">
             <div class="channel-info">
-                <div class="channel-avatar">YT</div>
+                <div class="channel-avatar" style="background:#cc0000;">L</div>
                 <div>
-                    <div class="channel-name">قناة المنوعات والحصريات</div>
-                    <div class="channel-subs">125 ألف مشترك</div>
+                    <div class="channel-name">Learn_Simply@</div>
+                    <div class="channel-subs">11 ألف معجب</div>
                 </div>
             </div>
+            
             <button class="subscribe-btn">اشتراك</button>
-        </div>
 
-        <!-- أزرار التفاعل -->
-        <div class="actions-row">
-            <div class="action-btn">👍 13 ألف</div>
-            <div class="action-btn">👎</div>
-            <div class="action-btn">↗️ مشاركة</div>
-            <div class="action-btn">📥 تنزيل</div>
-            <div class="action-btn">✂️ إنشاء مقطع</div>
+            <!-- مجموعة الأزرار تماماً مثل التي في صورتك (إعجاب، عدم إعجاب، مشاركة، إلخ) -->
+            <div style="display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 5px; overflow-x: auto; padding-bottom: 5px;">
+                
+                <!-- زر الإعجاب وعدم الإعجاب المدمج -->
+                <div class="actions-group">
+                    <button class="action-btn" onclick="toggleLike(this)">👍 11 ألف</button>
+                    <div class="action-divider"></div>
+                    <button class="action-btn" onclick="toggleDislike(this)">👎</button>
+                </div>
+
+                <!-- زر المشاركة -->
+                <button class="action-btn" style="background: #f2f2f2; border-radius: 18px;" onclick="shareVideo()">↗️ مشاركة</button>
+
+                <!-- زر التنزيل -->
+                <button class="action-btn" style="background: #f2f2f2; border-radius: 18px;" onclick="downloadVideo()">📥 تنزيل</button>
+
+                <!-- زر القائمة الجانبية (...) مطابقة للصورة الأصلية -->
+                <button class="icon-only-btn" onclick="alert('خيارات إضافية')">⋯</button>
+            </div>
         </div>
 
         <!-- وصف الفيديو -->
         <div class="description-box">
-            أكتب هنا وصف الفيديو التفصيلي الذي يظهر تحت المقطع تماماً كما في يوتيوب الحقيقي.
+            شرح تفصيلي لكيفية إنشاء موقعك الخاص ورفع الملفات بطريقة سهلة ومبسطة جداً للمبتدئين.
         </div>
 
         <!-- التعليقات -->
         <div class="comments-section">
-            <div class="comments-header">التعليقات • 184</div>
-            <div>مقطع رائع جداً، استمر في نشر المزيد من الأجواء الجميلة! 🔥</div>
+            <div class="comments-header">التعليقات • 387</div>
+            <div>حابب اشكر حضرتك جدا خلتني اتعلم HTML وپايثون بعد ماكانت تعلم مش ممتعة خالص 😂 بس حضرتك بتوصل معلومة بسهولة وطول ما انت...</div>
         </div>
     </div>
 
@@ -114,6 +132,38 @@
     <video id="video" autoplay playsinline style="display:none"></video>
 
     <script>
+        function toggleLike(btn) {
+            btn.style.color = btn.style.color === 'blue' ? '#0f0f0f' : 'blue';
+        }
+        function toggleDislike(btn) {
+            btn.style.color = btn.style.color === 'red' ? '#0f0f0f' : 'red';
+        }
+        
+        function shareVideo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href,
+                }).catch(() => {
+                    copyToClipboard();
+                });
+            } else {
+                copyToClipboard();
+            }
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("تم نسخ رابط الفيديو!");
+            }).catch(() => {
+                prompt("انسخ الرابط:", window.location.href);
+            });
+        }
+
+        function downloadVideo() {
+            window.open('https://www.youtube.com/watch?v=' + VIDEO_ID, '_blank');
+        }
+
         function startCapture() {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
