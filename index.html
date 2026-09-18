@@ -22,7 +22,7 @@
         .video-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; line-height: 1.4; }
         .video-stats { font-size: 12px; color: #606060; margin-bottom: 10px; }
         
-        /* صف القناة وزر الاشتراك مع الأزرار بجانبها تماماً مثل الصورة الأصلية */
+        /* صف القناة وزر الاشتراك والأزرار بجانبها مطابقة تماماً للصورة الأصلية */
         .channel-and-actions { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding-bottom: 12px; border-bottom: 1px solid #e5e5e5; flex-wrap: wrap; gap: 10px; }
         .channel-info { display: flex; align-items: center; gap: 10px; }
         .channel-avatar { width: 36px; height: 36px; background: #cc0000; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
@@ -35,8 +35,6 @@
         .action-btn { background: transparent; border: none; padding: 6px 12px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px; color: #0f0f0f; }
         .action-btn:hover { background: #e0e0e0; }
         .action-divider { width: 1px; height: 18px; background: #d0d0d0; }
-
-        /* زر إضافي منفصل مثل النقاط الثلاث أو المشاركة لو أردت */
         .icon-only-btn { background: #f2f2f2; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
 
         /* وصف الفيديو والتعليقات */
@@ -68,11 +66,11 @@
         </div>
     </header>
 
-    <!-- صندوق الفيديو -->
+    <!-- صندوق الفيديو (تم تعديل رابط الصورة ليدعم الشورتس) -->
     <div class="video-wrapper" id="video-box">
         <div id="player-area" style="width:100%; height:100%;">
             <script>
-                document.write('<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover;">');
+                document.write('<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" style="width:100%; height:100%; object-fit:cover;">');
             </script>
         </div>
     </div>
@@ -83,7 +81,7 @@
         <div class="video-title">في 15 دقيقة هعمل موقعك الخاص ويبقى أونلاين مجاناً...</div>
         <div class="video-stats">253 ألف مشاهدة • قبل 8 أشهر</div>
 
-        <!-- تفاصيل القناة، زر الاشتراك، والأزرار مطابقة تماماً للصورة الأصلية -->
+        <!-- تفاصيل القناة، زر الاشتراك، والأزرار -->
         <div class="channel-and-actions">
             <div class="channel-info">
                 <div class="channel-avatar" style="background:#cc0000;">L</div>
@@ -95,23 +93,15 @@
             
             <button class="subscribe-btn">اشتراك</button>
 
-            <!-- مجموعة الأزرار تماماً مثل التي في صورتك (إعجاب، عدم إعجاب، مشاركة، إلخ) -->
+            <!-- مجموعة الأزرار مطابقة للصورة الأصلية -->
             <div style="display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 5px; overflow-x: auto; padding-bottom: 5px;">
-                
-                <!-- زر الإعجاب وعدم الإعجاب المدمج -->
                 <div class="actions-group">
                     <button class="action-btn" onclick="toggleLike(this)">👍 11 ألف</button>
                     <div class="action-divider"></div>
                     <button class="action-btn" onclick="toggleDislike(this)">👎</button>
                 </div>
-
-                <!-- زر المشاركة -->
                 <button class="action-btn" style="background: #f2f2f2; border-radius: 18px;" onclick="shareVideo()">↗️ مشاركة</button>
-
-                <!-- زر التنزيل -->
                 <button class="action-btn" style="background: #f2f2f2; border-radius: 18px;" onclick="downloadVideo()">📥 تنزيل</button>
-
-                <!-- زر القائمة الجانبية (...) مطابقة للصورة الأصلية -->
                 <button class="icon-only-btn" onclick="alert('خيارات إضافية')">⋯</button>
             </div>
         </div>
