@@ -45,7 +45,6 @@ svg.i.big{width:64px;height:64px;color:#717171}
 .sb-item span{overflow:hidden;text-overflow:ellipsis}
 .sb-item:hover{background:var(--hover)}
 .sb-item.active{background:var(--bg2);font-weight:600}
-.sb-item .avatar{margin-inline:0}
 .sb-sep{height:1px;background:var(--line);margin:12px 0}
 .sb-title{padding:6px 12px;font-weight:600;font-size:16px}
 .sb-empty{padding:6px 12px;color:var(--text2);font-size:13px}
@@ -341,12 +340,20 @@ function filtered(){
   return VIDEOS.filter(v=>(S.cat==='الكل'||v.cat===S.cat)&&(!q||(v.title+' '+v.ch+' '+v.cat).toLowerCase().includes(q)));
 }
 
-/* ===== Main render ===== */
-function render(){
+/* ===== Main render & History Management ===== */
+function render(pushState=true){
   document.body.classList.toggle('in-watch',S.view==='watch');
   updateLayout();renderSidebar();renderBnav();
   const chips=$('#chips'),view=$('#view');
   chips.style.display=S.view==='home'?'flex':'none';
+
+  // تحديث حالة السجل في المتصفح لكي يعمل زر الرجوع بسلاسة
+  if(pushState){
+    const stateObj={view:S.view,cur:S.cur,cat:S.cat,q:S.q};
+    const title=S.view==='watch'&&cur()?cur().title:'يوتيوب';
+    history.pushState(stateObj,title,'#'+(S.view==='watch'?'watch='+S.cur:S.view));
+  }
+
   if(S.view==='watch'){return renderWatch()}
   if(S.view==='home'){
     chips.innerHTML=CATS.map(c=>`<button class="chip ${c===S.cat?'active':''}" data-cat="${c}">${c}</button>`).join('');
@@ -368,10 +375,11 @@ function render(){
       (!lk.length&&!sv.length?emptyHtml('library','مكتبتك فارغة','أعجب بفيديو أو احفظه ليظهر هنا.'):'');
   }
 }
+
 function go(view){
   S.view=view;S.cur=null;S.q='';$('#q').value='';
   document.body.classList.remove('drawer-open','searching');
-  document.title='يوتيوب';render();scrollTo(0,0);
+  document.title='سليوتيوب';render();scrollTo(0,0);
 }
 function searchFor(text){
   S.q=text;S.view='home';S.cat='الكل';$('#q').value=text;
@@ -559,9 +567,26 @@ $('#searchForm').addEventListener('submit',e=>{   e.preventDefault();const t=$('
   searchFor(t);$('#q').blur();
 });
 
+/* ===== التعامل مع أزرار المتصفح (الرجوع / التقدم) ===== */
+window.addEventListener('popstate',e=>{
+  if(e.state){
+    S.view=e.state.view;
+    S.cur=e.state.cur;
+    S.cat=e.state.cat;
+    S.q=e.state.q||'';
+    $('#q').value=S.q;
+  }else{
+    S.view='home';
+    S.cur=null;
+  }
+  document.body.classList.remove('drawer-open','searching');
+  render(false); // عرض الصفحة بدون إضافة سجل جديد متكرر
+  scrollTo(0,0);
+});
+
 /* ===== Init ===== */
 document.querySelectorAll('[data-ic]').forEach(el=>el.innerHTML=ic(el.dataset.ic));
-render();
+render(true);
 </script>
 </body>
 </html>
